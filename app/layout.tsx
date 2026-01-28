@@ -8,8 +8,8 @@ const _geist = Geist({ subsets: ["latin"] });
 const _geistMono = Geist_Mono({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: 'FSC3 Food Security Command & Control Center',
-  description: 'Government-grade Food Security Command & Control Center',
+  title: 'Food Security Command & Control Center (FSC3)',
+  description: 'Government-grade control center for monitoring and managing food supply chains.',
   icons: {
     icon: [
       {

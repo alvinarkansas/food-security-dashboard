@@ -73,7 +73,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
             </div>
             <div className="flex flex-col">
               <span className="text-sm font-semibold text-sidebar-foreground">Food Security</span>
-              <span className="text-xs text-muted-foreground">Intelligence Platform</span>
+              <span className="text-xs text-muted-foreground">Command & Control Center (FSC3)</span>
             </div>
           </div>
         </div>
