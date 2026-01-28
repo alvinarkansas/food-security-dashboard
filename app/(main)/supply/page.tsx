@@ -37,7 +37,7 @@ export default function SupplyMapPage() {
         title="Supply Network"
         description="Global import dependency and distribution visualization"
         actions={
-          <div className="flex gap-2">
+          <div className="flex flex-col sm:flex-row items-end gap-2">
             <Link href="/supply/demand-vs-supply">
               <Button variant="outline" size="sm">Demand vs Supply</Button>
             </Link>

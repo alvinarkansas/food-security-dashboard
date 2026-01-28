@@ -41,7 +41,7 @@ export default function RiskHeatmapPage() {
         title="Risk Intelligence"
         description="Likelihood × Impact analysis and risk assessment"
         actions={
-          <div className="flex gap-2">
+          <div className="flex flex-col sm:flex-row items-end justify-end gap-2">
             <Link href="/risk/register">
               <Button variant="outline" size="sm">Risk Register</Button>
             </Link>

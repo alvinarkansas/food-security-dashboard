@@ -35,7 +35,7 @@ export default function DashboardPage() {
         title="Executive Overview"
         description="High-level situational awareness and key performance indicators"
         actions={
-          <div className="flex gap-2">
+          <div className="flex flex-col sm:flex-row gap-2">
             <Button variant="outline" size="sm">Export</Button>
             <Link href="/dashboard/live">
               <Button size="sm">
