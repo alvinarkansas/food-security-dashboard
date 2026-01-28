@@ -8,9 +8,8 @@ const _geist = Geist({ subsets: ["latin"] });
 const _geistMono = Geist_Mono({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: 'Food Security Intelligence Platform',
-  description: 'Government-grade Food Security Decision Intelligence Platform',
-  generator: 'v0.app',
+  title: 'FSC3 Food Security Command & Control Center',
+  description: 'Government-grade Food Security Command & Control Center',
   icons: {
     icon: [
       {
