@@ -1,185 +1,354 @@
-import Link from 'next/link'
-import { PageHeader } from '@/components/page-header'
-import { StatCard } from '@/components/stat-card'
-import { Card } from '@/components/ui/card'
-import { Button } from '@/components/ui/button'
-import { Badge } from '@/components/ui/badge'
-import { 
-  Shield, 
-  TrendingUp, 
-  Clock, 
-  DollarSign, 
-  Users,
-  ArrowRight,
-  AlertTriangle
-} from 'lucide-react'
-import { dashboardMetrics, activeAlerts, productionData } from '@/lib/mock-data'
+"use client";
+
+import { useState } from "react";
+import { PageHeader } from "@/components/page-header";
+import { Card } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { MapPin, AlertCircle, TrendingUp, Globe, Package } from "lucide-react";
+import {
+  activeAlerts,
+  worldMapData,
+  shipmentData,
+  productionData,
+} from "@/lib/mock-data";
+import {
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  ResponsiveContainer,
+  LineChart,
+  Line,
+} from "recharts";
 
 export default function DashboardPage() {
+  const [selectedCountry, setSelectedCountry] = useState<string | null>(null);
+
   const getSeverityColor = (severity: string) => {
     switch (severity) {
-      case 'critical':
-        return 'bg-destructive text-destructive-foreground'
-      case 'high':
-        return 'bg-warning text-warning-foreground'
-      case 'medium':
-        return 'bg-info text-info-foreground'
+      case "critical":
+        return "bg-destructive text-destructive-foreground";
+      case "high":
+        return "bg-warning text-warning-foreground";
+      case "medium":
+        return "bg-info text-info-foreground";
       default:
-        return 'bg-muted text-muted-foreground'
+        return "bg-muted text-muted-foreground";
     }
-  }
+  };
+
+  const getRiskColor = (risk: string) => {
+    switch (risk) {
+      case "low":
+        return "bg-success";
+      case "medium":
+        return "bg-warning";
+      case "high":
+        return "bg-destructive";
+      default:
+        return "bg-muted";
+    }
+  };
 
   return (
     <div className="flex flex-col h-full">
       <PageHeader
-        title="Executive Overview"
-        description="High-level situational awareness and key performance indicators"
+        title="Live Food Security Dashboard"
+        description="Real-time monitoring and control centre"
         actions={
-          <div className="flex flex-col sm:flex-row gap-2">
-            <Button variant="outline" size="sm">Export</Button>
-            <Link href="/dashboard/live">
-              <Button size="sm">
-                Live Dashboard
-                <ArrowRight className="ml-2 h-4 w-4" />
-              </Button>
-            </Link>
+          <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 px-3 py-1.5 rounded-md bg-card border border-border">
+              <div className="w-2 h-2 rounded-full bg-success animate-pulse" />
+              <span className="text-sm text-foreground">Live</span>
+            </div>
+            <Button variant="outline" size="sm">
+              Notification
+            </Button>
           </div>
         }
       />
 
-      <div className="flex-1 p-6 space-y-6 overflow-auto">
-        {/* KPI Metrics */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
-          <StatCard
-            title="Food Security Index"
-            value={dashboardMetrics.food_security_index}
-            icon={Shield}
-            variant="success"
-            trend={{ value: '+2.1%', positive: true }}
-          />
-          <StatCard
-            title="Availability Risk"
-            value={dashboardMetrics.availability_risk}
-            icon={AlertTriangle}
-            variant="warning"
-          />
-          <StatCard
-            title="Lead Time Risk"
-            value={dashboardMetrics.lead_time_risk}
-            icon={Clock}
-            variant="success"
-          />
-          <StatCard
-            title="Price Volatility"
-            value={dashboardMetrics.price_volatility}
-            icon={DollarSign}
-            variant="default"
-          />
-          <StatCard
-            title="Supplier Concentration"
-            value={dashboardMetrics.supplier_concentration}
-            icon={Users}
-            variant="destructive"
-          />
-        </div>
-
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          {/* Active Alerts */}
-          <Card className="lg:col-span-2 p-6">
-            <div className="flex items-center justify-between mb-6">
-              <div>
-                <h3 className="text-lg font-semibold text-foreground">Active Alerts</h3>
-                <p className="text-sm text-muted-foreground mt-1">
-                  {dashboardMetrics.alerts_active} alerts requiring attention
-                </p>
+      <div className="flex-1 overflow-auto">
+        <div className="grid grid-cols-1 xl:grid-cols-3 h-full">
+          {/* Main Map Area */}
+          <div className="xl:col-span-2 p-6 space-y-6">
+            {/* World Map Visualization */}
+            <Card className="p-6 h-[500px]">
+              <div className="flex items-center justify-between mb-4">
+                <div className="flex items-center gap-2">
+                  <Globe className="w-5 h-5 text-primary" />
+                  <h3 className="text-lg font-semibold text-foreground">
+                    Global Supply Network
+                  </h3>
+                </div>
+                <div className="flex gap-2">
+                  <Badge variant="outline">Import Origins</Badge>
+                  <Badge variant="outline">Distribution Centers</Badge>
+                </div>
               </div>
-              <Link href="/risk">
-                <Button variant="ghost" size="sm">
-                  View All
-                  <ArrowRight className="ml-2 h-4 w-4" />
-                </Button>
-              </Link>
-            </div>
-            <div className="space-y-3">
-              {activeAlerts.slice(0, 5).map((alert) => (
-                <div
-                  key={alert.id}
-                  className="flex items-start gap-4 p-4 rounded-lg border border-border bg-card/50 hover:bg-card transition-colors cursor-pointer"
-                >
-                  <div className="flex-1">
-                    <div className="flex items-center gap-2 mb-1">
-                      <Badge className={getSeverityColor(alert.severity)}>
-                        {alert.severity}
-                      </Badge>
-                      <span className="text-xs text-muted-foreground">{alert.timestamp}</span>
+
+              {/* Simplified World Map Representation */}
+              <div className="relative h-[400px] bg-muted/20 rounded-lg border border-border flex items-center justify-center overflow-hidden">
+                {/* Grid overlay */}
+                <div className="absolute inset-0 grid grid-cols-8 grid-rows-6 opacity-10">
+                  {Array.from({ length: 48 }).map((_, i) => (
+                    <div key={i} className="border border-border" />
+                  ))}
+                </div>
+
+                {/* Country markers */}
+                <div className="absolute inset-0">
+                  {worldMapData.origins.map((origin, index) => {
+                    const positionMap: Record<
+                      string,
+                      { x: string; y: string }
+                    > = {
+                      Vietnam: { x: "65%", y: "45%" },
+                      Thailand: { x: "60%", y: "48%" },
+                      India: { x: "48%", y: "42%" },
+                      Malaysia: { x: "62%", y: "52%" },
+                      Indonesia: { x: "68%", y: "54%" },
+                    };
+                    const pos = positionMap[origin.country] || {
+                      x: "50%",
+                      y: "50%",
+                    };
+
+                    return (
+                      <div
+                        key={index}
+                        className="absolute transform -translate-x-1/2 -translate-y-1/2 cursor-pointer group"
+                        style={{ left: pos.x, top: pos.y }}
+                        onClick={() => setSelectedCountry(origin.country)}
+                      >
+                        {/* Pulse ring */}
+                        <div
+                          className={`absolute inset-0 w-12 h-12 -ml-6 -mt-6 rounded-full ${getRiskColor(origin.risk)} opacity-20 animate-ping`}
+                        />
+
+                        {/* Marker */}
+                        <div
+                          className={`relative w-3 h-3 rounded-full ${getRiskColor(origin.risk)} ring-4 ring-background`}
+                        />
+
+                        {/* Tooltip */}
+                        <div className="absolute left-6 top-0 hidden group-hover:block z-10 w-48 p-3 bg-popover border border-border rounded-lg shadow-lg">
+                          <div className="flex items-center justify-between mb-2">
+                            <span className="font-semibold text-sm text-foreground">
+                              {origin.country}
+                            </span>
+                            <Badge className={getSeverityColor(origin.risk)}>
+                              {origin.risk}
+                            </Badge>
+                          </div>
+                          <div className="space-y-1 text-xs">
+                            <div className="flex justify-between">
+                              <span className="text-muted-foreground">
+                                Volume:
+                              </span>
+                              <span className="text-foreground font-medium">
+                                {origin.value.toLocaleString()} MT
+                              </span>
+                            </div>
+                            <div className="flex justify-between">
+                              <span className="text-muted-foreground">
+                                Risk Level:
+                              </span>
+                              <span className="text-foreground font-medium capitalize">
+                                {origin.risk}
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+
+                {/* Legend */}
+                <div className="absolute bottom-4 left-4 bg-card/90 backdrop-blur-sm border border-border rounded-lg p-3 text-xs">
+                  <div className="space-y-2">
+                    <div className="flex items-center gap-2">
+                      <div className="w-2 h-2 rounded-full bg-success" />
+                      <span className="text-foreground">Low Risk</span>
                     </div>
-                    <h4 className="text-sm font-medium text-foreground mb-1">{alert.title}</h4>
-                    <p className="text-xs text-muted-foreground">{alert.description}</p>
-                    <div className="flex gap-2 mt-2">
-                      <span className="text-xs px-2 py-0.5 rounded bg-muted text-muted-foreground">
-                        {alert.country}
-                      </span>
-                      <span className="text-xs px-2 py-0.5 rounded bg-muted text-muted-foreground">
-                        {alert.commodity}
-                      </span>
+                    <div className="flex items-center gap-2">
+                      <div className="w-2 h-2 rounded-full bg-warning" />
+                      <span className="text-foreground">Medium Risk</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <div className="w-2 h-2 rounded-full bg-destructive" />
+                      <span className="text-foreground">High Risk</span>
                     </div>
                   </div>
                 </div>
-              ))}
-            </div>
-          </Card>
+              </div>
+            </Card>
 
-          {/* Top Risks & Production Summary */}
-          <div className="space-y-6">
-            {/* Forecasted Disruptions */}
-            <Card className="p-6">
-              <h3 className="text-lg font-semibold text-foreground mb-4">Forecast Window</h3>
-              <div className="space-y-4">
-                <div className="flex items-center justify-between">
-                  <span className="text-sm text-muted-foreground">Next 30 days</span>
-                  <Badge variant="outline" className="text-warning">Medium Risk</Badge>
-                </div>
+            {/* Charts */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {/* Production by Country */}
+              <Card className="p-6">
+                <h3 className="text-sm font-semibold text-foreground mb-4 flex items-center gap-2">
+                  <Package className="w-4 h-4" />
+                  Production by Country
+                </h3>
+                <ResponsiveContainer width="100%" height={200}>
+                  <BarChart data={productionData}>
+                    <CartesianGrid
+                      strokeDasharray="3 3"
+                      stroke="hsl(var(--border))"
+                    />
+                    <XAxis
+                      dataKey="country"
+                      stroke="hsl(var(--muted-foreground))"
+                      fontSize={12}
+                    />
+                    <YAxis
+                      stroke="hsl(var(--muted-foreground))"
+                      fontSize={12}
+                    />
+                    <Tooltip
+                      contentStyle={{
+                        backgroundColor: "hsl(var(--popover))",
+                        border: "1px solid hsl(var(--border))",
+                        borderRadius: "0.5rem",
+                        color: "hsl(var(--popover-foreground))",
+                      }}
+                    />
+                    <Bar
+                      dataKey="value"
+                      fill="hsl(var(--primary))"
+                      radius={[4, 4, 0, 0]}
+                    />
+                  </BarChart>
+                </ResponsiveContainer>
+              </Card>
+
+              {/* Shipment Trend */}
+              <Card className="p-6">
+                <h3 className="text-sm font-semibold text-foreground mb-4 flex items-center gap-2">
+                  <TrendingUp className="w-4 h-4" />
+                  Shipped Tonnage (6M)
+                </h3>
+                <ResponsiveContainer width="100%" height={200}>
+                  <LineChart data={shipmentData}>
+                    <CartesianGrid
+                      strokeDasharray="3 3"
+                      stroke="hsl(var(--border))"
+                    />
+                    <XAxis
+                      dataKey="month"
+                      stroke="hsl(var(--muted-foreground))"
+                      fontSize={12}
+                    />
+                    <YAxis
+                      stroke="hsl(var(--muted-foreground))"
+                      fontSize={12}
+                    />
+                    <Tooltip
+                      contentStyle={{
+                        backgroundColor: "hsl(var(--popover))",
+                        border: "1px solid hsl(var(--border))",
+                        borderRadius: "0.5rem",
+                        color: "hsl(var(--popover-foreground))",
+                      }}
+                    />
+                    <Line
+                      type="monotone"
+                      dataKey="shipped"
+                      stroke="hsl(var(--chart-2))"
+                      strokeWidth={2}
+                      dot={{ fill: "hsl(var(--chart-2))", r: 4 }}
+                    />
+                  </LineChart>
+                </ResponsiveContainer>
+              </Card>
+            </div>
+          </div>
+
+          {/* Right Panel - Alerts & Status */}
+          <div className="border-l border-border bg-card/30 p-6">
+            <div className="space-y-6">
+              {/* Status Summary */}
+              <div>
+                <h3 className="text-sm font-semibold text-foreground mb-3 flex items-center gap-2">
+                  <AlertCircle className="w-4 h-4" />
+                  Active Alerts
+                </h3>
                 <div className="space-y-2">
-                  {dashboardMetrics.top_risks.map((risk, index) => (
+                  {activeAlerts.slice(0, 6).map((alert) => (
                     <div
-                      key={index}
-                      className="flex items-center gap-2 text-sm p-2 rounded bg-muted/30"
+                      key={alert.id}
+                      className="p-3 rounded-lg border border-border bg-card hover:bg-card/80 transition-colors cursor-pointer"
                     >
-                      <AlertTriangle className="w-3 h-3 text-warning shrink-0" />
-                      <span className="text-foreground text-xs">{risk}</span>
+                      <div className="flex items-start gap-2 mb-2">
+                        <Badge
+                          className={getSeverityColor(alert.severity)}
+                          variant="default"
+                        >
+                          {alert.severity}
+                        </Badge>
+                        <span className="text-xs text-muted-foreground">
+                          {alert.timestamp}
+                        </span>
+                      </div>
+                      <h4 className="text-xs font-medium text-foreground mb-1">
+                        {alert.title}
+                      </h4>
+                      <p className="text-xs text-muted-foreground line-clamp-2">
+                        {alert.description}
+                      </p>
+                      <div className="flex items-center gap-1 mt-2">
+                        <MapPin className="w-3 h-3 text-muted-foreground" />
+                        <span className="text-xs text-muted-foreground">
+                          {alert.country}
+                        </span>
+                      </div>
                     </div>
                   ))}
                 </div>
               </div>
-            </Card>
 
-            {/* Production by Country */}
-            <Card className="p-6">
-              <h3 className="text-lg font-semibold text-foreground mb-4">
-                Top Production Centers
-              </h3>
-              <div className="space-y-3">
-                {productionData.map((item) => (
-                  <div key={item.country}>
-                    <div className="flex items-center justify-between mb-1">
-                      <span className="text-sm text-foreground">{item.country}</span>
-                      <span className="text-sm font-medium text-foreground">
-                        {item.value.toLocaleString()} MT
-                      </span>
-                    </div>
-                    <div className="w-full bg-muted rounded-full h-2">
-                      <div
-                        className="bg-primary h-2 rounded-full transition-all"
-                        style={{ width: `${item.percentage}%` }}
-                      />
-                    </div>
+              {/* Risk Labels */}
+              <div>
+                <h3 className="text-sm font-semibold text-foreground mb-3">
+                  System Status
+                </h3>
+                <div className="space-y-2">
+                  <div className="flex items-center justify-between p-2 rounded bg-muted/30">
+                    <span className="text-xs text-foreground">
+                      Overall Status
+                    </span>
+                    <Badge className="bg-success text-success-foreground">
+                      Stable
+                    </Badge>
                   </div>
-                ))}
+                  <div className="flex items-center justify-between p-2 rounded bg-muted/30">
+                    <span className="text-xs text-foreground">
+                      Supply Chain
+                    </span>
+                    <Badge className="bg-warning text-warning-foreground">
+                      Risky
+                    </Badge>
+                  </div>
+                  <div className="flex items-center justify-between p-2 rounded bg-muted/30">
+                    <span className="text-xs text-foreground">
+                      Price Stability
+                    </span>
+                    <Badge className="bg-success text-success-foreground">
+                      Stable
+                    </Badge>
+                  </div>
+                </div>
               </div>
-            </Card>
+            </div>
           </div>
         </div>
       </div>
     </div>
-  )
+  );
 }

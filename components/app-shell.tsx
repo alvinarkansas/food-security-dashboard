@@ -14,6 +14,7 @@ import {
   Cpu,
   Radio,
   Menu,
+  Telescope,
   X
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
@@ -21,6 +22,7 @@ import { Button } from '@/components/ui/button'
 
 const navigation = [
   { name: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
+  { name: 'Overview', href: '/overview', icon: Telescope },
   { name: 'Risk', href: '/risk', icon: AlertTriangle },
   { name: 'Supply', href: '/supply', icon: Network },
   { name: 'Models', href: '/models', icon: LineChart },
