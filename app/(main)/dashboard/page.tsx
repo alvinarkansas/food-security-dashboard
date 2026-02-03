@@ -15,11 +15,7 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { MapPin, AlertCircle, TrendingUp, Globe, Package } from "lucide-react";
 import { MapContainer } from "@/components/map/map-container";
-import {
-  activeAlerts,
-  shipmentData,
-  productionData,
-} from "@/lib/mock-data";
+import { activeAlerts, shipmentData, productionData } from "@/lib/mock-data";
 import {
   BarChart,
   Bar,
@@ -31,6 +27,7 @@ import {
   LineChart,
   Line,
 } from "recharts";
+import Link from "next/link";
 
 const ALERT_CATEGORIES = [
   { value: "all", label: "All category" },
@@ -47,7 +44,9 @@ const getCategoryLabel = (value: string): string => {
 
 export default function DashboardPage() {
   const [alertCategory, setAlertCategory] = useState<string>("all");
-  const [alertTab, setAlertTab] = useState<"government" | "commercial">("government");
+  const [alertTab, setAlertTab] = useState<"government" | "commercial">(
+    "government",
+  );
 
   const getSeverityColor = (severity: string) => {
     switch (severity) {
@@ -73,9 +72,11 @@ export default function DashboardPage() {
               <div className="w-2 h-2 rounded-full bg-success animate-pulse" />
               <span className="text-sm text-foreground">Live</span>
             </div>
-            <Button variant="outline" size="sm">
-              Notification
-            </Button>
+            <Link href="/overview">
+              <Button variant="outline" size="sm">
+                Alert
+              </Button>
+            </Link>
           </div>
         }
       />
@@ -85,17 +86,25 @@ export default function DashboardPage() {
           {/* Main Map Area */}
           <div className="xl:col-span-2 p-6 space-y-6">
             {/* World Map Visualization */}
-            <Card className="p-6 h-[500px]">
-              <div className="flex items-center justify-between mb-4">
+            <Card className="pb-0 sm:p-6 h-125">
+              <div className="flex flex-col sm:flex-row gap-2 items-center justify-between mb-4">
                 <div className="flex items-center gap-2">
                   <Globe className="w-5 h-5 text-primary" />
                   <h3 className="text-lg font-semibold text-foreground">
                     Global Supply Network
                   </h3>
                 </div>
-                <div className="flex gap-2 items-center">
-                  <Badge variant="outline">Import Origins</Badge>
-                  <Badge variant="outline">Distribution Centers</Badge>
+                <div className="flex gap-2 items-center relative z-[1001]">
+                  <div className="hidden lg:flex shrink-0 px-3 py-1.5 rounded-md bg-card border border-border">
+                    <span className="text-sm text-foreground">
+                      Import Origins
+                    </span>
+                  </div>
+                  <div className="hidden lg:flex shrink-0 px-3 py-1.5 rounded-md bg-card border border-border">
+                    <span className="text-sm text-foreground">
+                      Distribution Centers
+                    </span>
+                  </div>
                   <Select
                     value={alertCategory}
                     onValueChange={setAlertCategory}
@@ -103,7 +112,7 @@ export default function DashboardPage() {
                     <SelectTrigger className="w-[180px]">
                       <SelectValue placeholder="Filter by category" />
                     </SelectTrigger>
-                    <SelectContent>
+                    <SelectContent className="z-[1002]">
                       {ALERT_CATEGORIES.map((category) => (
                         <SelectItem key={category.value} value={category.value}>
                           {category.label}
@@ -231,13 +240,19 @@ export default function DashboardPage() {
                     Active Alerts
                   </h3>
                 </div>
-                
-                <Tabs value={alertTab} onValueChange={(val) => setAlertTab(val as "government" | "commercial")} className="w-full">
+
+                <Tabs
+                  value={alertTab}
+                  onValueChange={(val) =>
+                    setAlertTab(val as "government" | "commercial")
+                  }
+                  className="w-full"
+                >
                   <TabsList className="grid w-full grid-cols-2 mb-4">
                     <TabsTrigger value="government">Government</TabsTrigger>
                     <TabsTrigger value="commercial">Commercial</TabsTrigger>
                   </TabsList>
-                  
+
                   <TabsContent value="government" className="space-y-2">
                     {activeAlerts.slice(0, 6).map((alert) => (
                       <div
@@ -266,7 +281,7 @@ export default function DashboardPage() {
                         <h4 className="text-xs font-medium text-foreground mb-2">
                           {alert.title}
                         </h4>
-                        
+
                         {/* Recommended Actions */}
                         <div className="mb-2 space-y-1">
                           <span className="text-xs font-semibold text-foreground">
@@ -282,7 +297,7 @@ export default function DashboardPage() {
                             </div>
                           ))}
                         </div>
-                        
+
                         <div className="flex items-center gap-1">
                           <MapPin className="w-3 h-3 text-muted-foreground" />
                           <span className="text-xs text-muted-foreground">
@@ -292,7 +307,7 @@ export default function DashboardPage() {
                       </div>
                     ))}
                   </TabsContent>
-                  
+
                   <TabsContent value="commercial" className="space-y-2">
                     {activeAlerts.slice(0, 6).map((alert) => (
                       <div
@@ -321,7 +336,7 @@ export default function DashboardPage() {
                         <h4 className="text-xs font-medium text-foreground mb-2">
                           {alert.title}
                         </h4>
-                        
+
                         {/* Recommended Actions */}
                         <div className="mb-2 space-y-1">
                           <span className="text-xs font-semibold text-foreground">
@@ -337,7 +352,7 @@ export default function DashboardPage() {
                             </div>
                           ))}
                         </div>
-                        
+
                         <div className="flex items-center gap-1">
                           <MapPin className="w-3 h-3 text-muted-foreground" />
                           <span className="text-xs text-muted-foreground">
