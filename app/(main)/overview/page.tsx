@@ -118,9 +118,20 @@ export default function OverviewPage() {
                     <h4 className="text-sm font-medium text-foreground mb-1">
                       {alert.title}
                     </h4>
-                    <p className="text-xs text-muted-foreground">
-                      {alert.description}
-                    </p>
+                    <div className="mb-2 space-y-1">
+                      <span className="text-xs font-semibold text-foreground">
+                        Recommended Actions:
+                      </span>
+                      {alert.government.slice(0, 2).map((action, idx) => (
+                        <div
+                          key={idx}
+                          className="text-xs text-muted-foreground flex gap-2"
+                        >
+                          <span className="text-primary">•</span>
+                          <span>{action}</span>
+                        </div>
+                      ))}
+                    </div>
                     <div className="flex gap-2 mt-2">
                       <span className="text-xs px-2 py-0.5 rounded bg-muted text-muted-foreground">
                         {alert.country}

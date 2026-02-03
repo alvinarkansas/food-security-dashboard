@@ -12,6 +12,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { MapPin, AlertCircle, TrendingUp, Globe, Package } from "lucide-react";
 import {
   activeAlerts,
@@ -47,6 +48,7 @@ const getCategoryLabel = (value: string): string => {
 export default function DashboardPage() {
   const [selectedCountry, setSelectedCountry] = useState<string | null>(null);
   const [alertCategory, setAlertCategory] = useState<string>("all");
+  const [alertTab, setAlertTab] = useState<"government" | "commercial">("government");
 
   const getSeverityColor = (severity: string) => {
     switch (severity) {
@@ -309,49 +311,131 @@ export default function DashboardPage() {
           {/* Right Panel - Alerts & Status */}
           <div className="border-l border-border bg-card/30 p-6">
             <div className="space-y-6">
-              {/* Status Summary */}
+              {/* Alerts with Tabs */}
               <div>
-                <h3 className="text-sm font-semibold text-foreground mb-3 flex items-center gap-2">
-                  <AlertCircle className="w-4 h-4" />
-                  Active Alerts
-                </h3>
-                <div className="space-y-2">
-                  {activeAlerts.slice(0, 6).map((alert) => (
-                    <div
-                      key={alert.id}
-                      className="p-3 rounded-lg border border-border bg-card hover:bg-card/80 transition-colors cursor-pointer relative"
-                    >
-                      <div className="absolute top-2 right-2">
-                        <Badge variant="secondary" className="text-xs">
-                          {getCategoryLabel(alert.category)}
-                        </Badge>
-                      </div>
-                      <div className="flex items-start gap-2 mb-2">
-                        <Badge
-                          className={getSeverityColor(alert.severity)}
-                          variant="default"
-                        >
-                          {alert.severity}
-                        </Badge>
-                        <span className="text-xs text-muted-foreground">
-                          {alert.timestamp}
-                        </span>
-                      </div>
-                      <h4 className="text-xs font-medium text-foreground mb-1">
-                        {alert.title}
-                      </h4>
-                      <p className="text-xs text-muted-foreground line-clamp-2">
-                        {alert.description}
-                      </p>
-                      <div className="flex items-center gap-1 mt-2">
-                        <MapPin className="w-3 h-3 text-muted-foreground" />
-                        <span className="text-xs text-muted-foreground">
-                          {alert.country}
-                        </span>
-                      </div>
-                    </div>
-                  ))}
+                <div className="flex items-center justify-between mb-3">
+                  <h3 className="text-sm font-semibold text-foreground flex items-center gap-2">
+                    <AlertCircle className="w-4 h-4" />
+                    Active Alerts
+                  </h3>
                 </div>
+                
+                <Tabs value={alertTab} onValueChange={(val) => setAlertTab(val as "government" | "commercial")} className="w-full">
+                  <TabsList className="grid w-full grid-cols-2 mb-4">
+                    <TabsTrigger value="government">Government</TabsTrigger>
+                    <TabsTrigger value="commercial">Commercial</TabsTrigger>
+                  </TabsList>
+                  
+                  <TabsContent value="government" className="space-y-2">
+                    {activeAlerts.slice(0, 6).map((alert) => (
+                      <div
+                        key={alert.id}
+                        className="p-3 rounded-lg border border-border bg-card hover:bg-card/80 transition-colors cursor-pointer relative"
+                      >
+                        <div className="absolute top-2 right-2 flex flex-col gap-1 items-end">
+                          <Badge variant="secondary" className="text-xs">
+                            {getCategoryLabel(alert.category)}
+                          </Badge>
+                          <span className="text-xs font-semibold text-primary">
+                            Risk: {alert.riskScore}/100
+                          </span>
+                        </div>
+                        <div className="flex items-start gap-2 mb-2">
+                          <Badge
+                            className={getSeverityColor(alert.severity)}
+                            variant="default"
+                          >
+                            {alert.severity}
+                          </Badge>
+                          <span className="text-xs text-muted-foreground">
+                            {alert.timestamp}
+                          </span>
+                        </div>
+                        <h4 className="text-xs font-medium text-foreground mb-2">
+                          {alert.title}
+                        </h4>
+                        
+                        {/* Recommended Actions */}
+                        <div className="mb-2 space-y-1">
+                          <span className="text-xs font-semibold text-foreground">
+                            Recommended Actions:
+                          </span>
+                          {alert.government.slice(0, 2).map((action, idx) => (
+                            <div
+                              key={idx}
+                              className="text-xs text-muted-foreground flex gap-2"
+                            >
+                              <span className="text-primary">•</span>
+                              <span>{action}</span>
+                            </div>
+                          ))}
+                        </div>
+                        
+                        <div className="flex items-center gap-1">
+                          <MapPin className="w-3 h-3 text-muted-foreground" />
+                          <span className="text-xs text-muted-foreground">
+                            {alert.country}
+                          </span>
+                        </div>
+                      </div>
+                    ))}
+                  </TabsContent>
+                  
+                  <TabsContent value="commercial" className="space-y-2">
+                    {activeAlerts.slice(0, 6).map((alert) => (
+                      <div
+                        key={alert.id}
+                        className="p-3 rounded-lg border border-border bg-card hover:bg-card/80 transition-colors cursor-pointer relative"
+                      >
+                        <div className="absolute top-2 right-2 flex flex-col gap-1 items-end">
+                          <Badge variant="secondary" className="text-xs">
+                            {getCategoryLabel(alert.category)}
+                          </Badge>
+                          <span className="text-xs font-semibold text-primary">
+                            Risk: {alert.riskScore}/100
+                          </span>
+                        </div>
+                        <div className="flex items-start gap-2 mb-2">
+                          <Badge
+                            className={getSeverityColor(alert.severity)}
+                            variant="default"
+                          >
+                            {alert.severity}
+                          </Badge>
+                          <span className="text-xs text-muted-foreground">
+                            {alert.timestamp}
+                          </span>
+                        </div>
+                        <h4 className="text-xs font-medium text-foreground mb-2">
+                          {alert.title}
+                        </h4>
+                        
+                        {/* Recommended Actions */}
+                        <div className="mb-2 space-y-1">
+                          <span className="text-xs font-semibold text-foreground">
+                            Recommended Actions:
+                          </span>
+                          {alert.commercial.slice(0, 2).map((action, idx) => (
+                            <div
+                              key={idx}
+                              className="text-xs text-muted-foreground flex gap-2"
+                            >
+                              <span className="text-primary">•</span>
+                              <span>{action}</span>
+                            </div>
+                          ))}
+                        </div>
+                        
+                        <div className="flex items-center gap-1">
+                          <MapPin className="w-3 h-3 text-muted-foreground" />
+                          <span className="text-xs text-muted-foreground">
+                            {alert.country}
+                          </span>
+                        </div>
+                      </div>
+                    ))}
+                  </TabsContent>
+                </Tabs>
               </div>
 
               {/* Risk Labels */}

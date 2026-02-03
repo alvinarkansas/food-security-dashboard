@@ -15,52 +15,102 @@ export const activeAlerts = [
   {
     id: 1,
     title: 'Rice Import Delay',
-    description: 'Shipment from Vietnam delayed by 7 days due to port congestion',
     severity: 'high',
     country: 'Vietnam',
     commodity: 'Rice',
     category: 'logistics',
-    timestamp: '2 hours ago'
+    timestamp: '2 hours ago',
+    riskScore: 64,
+    government: [
+      'Prioritise port clearance for staple food imports',
+      'Deploy national rice buffer stocks to stabilise domestic supply',
+      'Engage exporters and port authorities to reduce congestion risk'
+    ],
+    commercial: [
+      'Divert rice sourcing to alternative suppliers',
+      'Re-route shipments through alternative ports',
+      'Renegotiate delivery schedules with buyers'
+    ]
   },
   {
     id: 2,
     title: 'Wheat Price Spike',
-    description: 'Wheat prices increased 18% due to export restrictions',
     severity: 'critical',
     country: 'Ukraine',
     commodity: 'Wheat',
     category: 'policy',
-    timestamp: '5 hours ago'
+    timestamp: '5 hours ago',
+    riskScore: 78,
+    government: [
+      'Release strategic wheat reserves to dampen inflationary pressure',
+      'Temporarily relax import duties or quotas for substitution',
+      'Coordinate regional food security planning with neighbouring countries'
+    ],
+    commercial: [
+      'Shift wheat sourcing to alternative origins',
+      'Lock short-term forward contracts',
+      'Review downstream pricing mechanisms'
+    ]
   },
   {
     id: 3,
     title: 'Monsoon Weather Alert',
-    description: 'Heavy rainfall forecasted may impact vegetable production',
     severity: 'medium',
     country: 'Malaysia',
     commodity: 'Vegetables',
     category: 'weather',
-    timestamp: '1 day ago'
+    timestamp: '1 day ago',
+    riskScore: 52,
+    government: [
+      'Mobilise emergency logistics and flood mitigation support',
+      'Conduct rapid crop damage assessments and yield loss analysis',
+      'Prepare contingency import plans for affected vegetables'
+    ],
+    commercial: [
+      'Divert vegetable sourcing to alternative suppliers',
+      'Engage third-party logistics providers',
+      'Increase cold storage buffers near demand centres'
+    ]
   },
   {
     id: 4,
     title: 'Supply Chain Disruption',
-    description: 'Transportation strike affecting dairy distribution',
     severity: 'medium',
     country: 'India',
     commodity: 'Dairy',
     category: 'logistics',
-    timestamp: '2 days ago'
+    timestamp: '2 days ago',
+    riskScore: 57,
+    government: [
+      'Engage transport unions to limit disruption duration',
+      'Activate emergency transport corridors for perishables',
+      'Monitor dairy and cold-chain stability to prevent spoilage'
+    ],
+    commercial: [
+      'Divert dairy sourcing to alternative suppliers',
+      'Engage third-party logistics providers',
+      'Increase cold storage buffers near demand centres'
+    ]
   },
   {
     id: 5,
     title: 'Supplier Capacity Issue',
-    description: 'Primary corn supplier operating at 65% capacity',
     severity: 'low',
     country: 'Thailand',
     commodity: 'Corn',
     category: 'diseases',
-    timestamp: '3 days ago'
+    timestamp: '3 days ago',
+    riskScore: 38,
+    government: [
+      'Monitor supplier concentration risk in key food categories',
+      'Support capacity recovery efforts through financing or regulatory flexibility',
+      'Track downstream processing impacts on manufacturers'
+    ],
+    commercial: [
+      'Activate secondary suppliers',
+      'Rebalance procurement volumes',
+      'Adjust delivery schedules and contract terms'
+    ]
   }
 ]
 
