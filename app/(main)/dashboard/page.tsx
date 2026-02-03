@@ -14,9 +14,9 @@ import {
 } from "@/components/ui/select";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { MapPin, AlertCircle, TrendingUp, Globe, Package } from "lucide-react";
+import { MapContainer } from "@/components/map/map-container";
 import {
   activeAlerts,
-  worldMapData,
   shipmentData,
   productionData,
 } from "@/lib/mock-data";
@@ -46,7 +46,6 @@ const getCategoryLabel = (value: string): string => {
 };
 
 export default function DashboardPage() {
-  const [selectedCountry, setSelectedCountry] = useState<string | null>(null);
   const [alertCategory, setAlertCategory] = useState<string>("all");
   const [alertTab, setAlertTab] = useState<"government" | "commercial">("government");
 
@@ -60,19 +59,6 @@ export default function DashboardPage() {
         return "bg-info text-info-foreground";
       default:
         return "bg-muted text-muted-foreground";
-    }
-  };
-
-  const getRiskColor = (risk: string) => {
-    switch (risk) {
-      case "low":
-        return "bg-success";
-      case "medium":
-        return "bg-warning";
-      case "high":
-        return "bg-destructive";
-      default:
-        return "bg-muted";
     }
   };
 
@@ -128,86 +114,12 @@ export default function DashboardPage() {
                 </div>
               </div>
 
-              {/* Simplified World Map Representation */}
-              <div className="relative h-[400px] bg-muted/20 rounded-lg border border-border flex items-center justify-center overflow-hidden">
-                {/* Grid overlay */}
-                <div className="absolute inset-0 grid grid-cols-8 grid-rows-6 opacity-10">
-                  {Array.from({ length: 48 }).map((_, i) => (
-                    <div key={i} className="border border-border" />
-                  ))}
-                </div>
-
-                {/* Country markers */}
-                <div className="absolute inset-0">
-                  {worldMapData.origins.map((origin, index) => {
-                    const positionMap: Record<
-                      string,
-                      { x: string; y: string }
-                    > = {
-                      Vietnam: { x: "65%", y: "45%" },
-                      Thailand: { x: "60%", y: "48%" },
-                      India: { x: "48%", y: "42%" },
-                      Malaysia: { x: "62%", y: "52%" },
-                      Indonesia: { x: "68%", y: "54%" },
-                    };
-                    const pos = positionMap[origin.country] || {
-                      x: "50%",
-                      y: "50%",
-                    };
-
-                    return (
-                      <div
-                        key={index}
-                        className="absolute transform -translate-x-1/2 -translate-y-1/2 cursor-pointer group"
-                        style={{ left: pos.x, top: pos.y }}
-                        onClick={() => setSelectedCountry(origin.country)}
-                      >
-                        {/* Pulse ring */}
-                        <div
-                          className={`absolute inset-0 w-12 h-12 -ml-6 -mt-6 rounded-full ${getRiskColor(origin.risk)} opacity-20 animate-ping`}
-                        />
-
-                        {/* Marker */}
-                        <div
-                          className={`relative w-3 h-3 rounded-full ${getRiskColor(origin.risk)} ring-4 ring-background`}
-                        />
-
-                        {/* Tooltip */}
-                        <div className="absolute left-6 top-0 hidden group-hover:block z-10 w-48 p-3 bg-popover border border-border rounded-lg shadow-lg">
-                          <div className="flex items-center justify-between mb-2">
-                            <span className="font-semibold text-sm text-foreground">
-                              {origin.country}
-                            </span>
-                            <Badge className={getSeverityColor(origin.risk)}>
-                              {origin.risk}
-                            </Badge>
-                          </div>
-                          <div className="space-y-1 text-xs">
-                            <div className="flex justify-between">
-                              <span className="text-muted-foreground">
-                                Volume:
-                              </span>
-                              <span className="text-foreground font-medium">
-                                {origin.value.toLocaleString()} MT
-                              </span>
-                            </div>
-                            <div className="flex justify-between">
-                              <span className="text-muted-foreground">
-                                Risk Level:
-                              </span>
-                              <span className="text-foreground font-medium capitalize">
-                                {origin.risk}
-                              </span>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    );
-                  })}
-                </div>
+              {/* Interactive World Map */}
+              <div className="relative h-[400px] rounded-lg overflow-hidden">
+                <MapContainer />
 
                 {/* Legend */}
-                <div className="absolute bottom-4 left-4 bg-card/90 backdrop-blur-sm border border-border rounded-lg p-3 text-xs">
+                <div className="absolute bottom-4 left-4 z-[1000] bg-card/90 backdrop-blur-sm border border-border rounded-lg p-3 text-xs">
                   <div className="space-y-2">
                     <div className="flex items-center gap-2">
                       <div className="w-2 h-2 rounded-full bg-success" />

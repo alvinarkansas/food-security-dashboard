@@ -141,3 +141,45 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* Leaflet popup styling to match shadcn theme */
+.leaflet-popup-content-wrapper {
+  background: hsl(var(--popover));
+  color: hsl(var(--popover-foreground));
+  border: 1px solid hsl(var(--border));
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+}
+
+.leaflet-popup-content {
+  margin: 12px;
+  max-width: 320px;
+}
+
+.leaflet-popup-tip {
+  background: hsl(var(--popover));
+  border: 1px solid hsl(var(--border));
+  border-top: none;
+  border-left: none;
+}
+
+.leaflet-container {
+  font-family: inherit;
+}
+
+.leaflet-popup-content p {
+  margin: 0;
+}
+
+/* Custom marker animation */
+@keyframes ping {
+  75%, 100% {
+    transform: translate(-50%, -50%) scale(2);
+    opacity: 0;
+  }
+}
+
+.custom-marker {
+  background: transparent !important;
+  border: none !important;
+}
