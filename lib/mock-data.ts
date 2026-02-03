@@ -19,6 +19,7 @@ export const activeAlerts = [
     severity: 'high',
     country: 'Vietnam',
     commodity: 'Rice',
+    category: 'logistics',
     timestamp: '2 hours ago'
   },
   {
@@ -28,6 +29,7 @@ export const activeAlerts = [
     severity: 'critical',
     country: 'Ukraine',
     commodity: 'Wheat',
+    category: 'policy',
     timestamp: '5 hours ago'
   },
   {
@@ -37,6 +39,7 @@ export const activeAlerts = [
     severity: 'medium',
     country: 'Malaysia',
     commodity: 'Vegetables',
+    category: 'weather',
     timestamp: '1 day ago'
   },
   {
@@ -46,6 +49,7 @@ export const activeAlerts = [
     severity: 'medium',
     country: 'India',
     commodity: 'Dairy',
+    category: 'logistics',
     timestamp: '2 days ago'
   },
   {
@@ -55,6 +59,7 @@ export const activeAlerts = [
     severity: 'low',
     country: 'Thailand',
     commodity: 'Corn',
+    category: 'diseases',
     timestamp: '3 days ago'
   }
 ]

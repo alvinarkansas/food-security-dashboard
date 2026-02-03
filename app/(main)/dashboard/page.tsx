@@ -5,6 +5,13 @@ import { PageHeader } from "@/components/page-header";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { MapPin, AlertCircle, TrendingUp, Globe, Package } from "lucide-react";
 import {
   activeAlerts,
@@ -24,8 +31,22 @@ import {
   Line,
 } from "recharts";
 
+const ALERT_CATEGORIES = [
+  { value: "all", label: "All category" },
+  { value: "weather", label: "Weather" },
+  { value: "diseases", label: "Diseases" },
+  { value: "geopolitical", label: "Geo political" },
+  { value: "policy", label: "Policy decision" },
+  { value: "logistics", label: "Logistics disruption" },
+];
+
+const getCategoryLabel = (value: string): string => {
+  return ALERT_CATEGORIES.find((cat) => cat.value === value)?.label || value;
+};
+
 export default function DashboardPage() {
   const [selectedCountry, setSelectedCountry] = useState<string | null>(null);
+  const [alertCategory, setAlertCategory] = useState<string>("all");
 
   const getSeverityColor = (severity: string) => {
     switch (severity) {
@@ -84,9 +105,24 @@ export default function DashboardPage() {
                     Global Supply Network
                   </h3>
                 </div>
-                <div className="flex gap-2">
+                <div className="flex gap-2 items-center">
                   <Badge variant="outline">Import Origins</Badge>
                   <Badge variant="outline">Distribution Centers</Badge>
+                  <Select
+                    value={alertCategory}
+                    onValueChange={setAlertCategory}
+                  >
+                    <SelectTrigger className="w-[180px]">
+                      <SelectValue placeholder="Filter by category" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {ALERT_CATEGORIES.map((category) => (
+                        <SelectItem key={category.value} value={category.value}>
+                          {category.label}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
                 </div>
               </div>
 
@@ -283,8 +319,13 @@ export default function DashboardPage() {
                   {activeAlerts.slice(0, 6).map((alert) => (
                     <div
                       key={alert.id}
-                      className="p-3 rounded-lg border border-border bg-card hover:bg-card/80 transition-colors cursor-pointer"
+                      className="p-3 rounded-lg border border-border bg-card hover:bg-card/80 transition-colors cursor-pointer relative"
                     >
+                      <div className="absolute top-2 right-2">
+                        <Badge variant="secondary" className="text-xs">
+                          {getCategoryLabel(alert.category)}
+                        </Badge>
+                      </div>
                       <div className="flex items-start gap-2 mb-2">
                         <Badge
                           className={getSeverityColor(alert.severity)}
