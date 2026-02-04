@@ -159,7 +159,7 @@ export default function DashboardPage() {
                   <BarChart data={productionData}>
                     <CartesianGrid
                       strokeDasharray="3 3"
-                      stroke="grey"
+                      stroke="#e3ecfc"
                     />
                     <XAxis
                       dataKey="country"
@@ -197,15 +197,16 @@ export default function DashboardPage() {
                   <LineChart data={shipmentData}>
                     <CartesianGrid
                       strokeDasharray="3 3"
-                      stroke="hsl(var(--border))"
+                      stroke="#e3ecfc"
                     />
                     <XAxis
                       dataKey="month"
-                      stroke="hsl(var(--muted-foreground))"
+                      stroke="black"
                       fontSize={12}
+                      padding={{ left: 20, right: 20 }}
                     />
                     <YAxis
-                      stroke="hsl(var(--muted-foreground))"
+                      stroke="black"
                       fontSize={12}
                     />
                     <Tooltip
