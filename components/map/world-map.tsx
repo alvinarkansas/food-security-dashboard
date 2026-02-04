@@ -11,6 +11,8 @@ import {
 } from "./country-coordinates";
 import { Badge } from "@/components/ui/badge";
 
+const MAPTILER_API_KEY = "r3S22sP32qcLsVMpZg4N";
+
 const createMarkerIcon = (risk: CountryMarker["risk"]) => {
   const color = getRiskColor(risk);
   return L.divIcon({
@@ -68,8 +70,10 @@ export function WorldMap() {
       attributionControl={false}
     >
       <TileLayer
-        url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png"
-        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
+        url={`https://api.maptiler.com/maps/streets-v2/{z}/{x}/{y}@2x.png?key=${MAPTILER_API_KEY}`}
+        tileSize={512}
+        zoomOffset={-1}
+        attribution='&copy; <a href="https://www.maptiler.com/copyright/">MapTiler</a> &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
       />
       {countryMarkers.map((marker) => (
         <Marker

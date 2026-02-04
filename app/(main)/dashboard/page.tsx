@@ -30,7 +30,7 @@ import {
 import Link from "next/link";
 
 const ALERT_CATEGORIES = [
-  { value: "all", label: "All category" },
+  { value: "all", label: "All categories" },
   { value: "weather", label: "Weather" },
   { value: "diseases", label: "Diseases" },
   { value: "geopolitical", label: "Geo political" },
@@ -73,7 +73,7 @@ export default function DashboardPage() {
               <span className="text-sm text-foreground">Live</span>
             </div>
             <Link href="/overview">
-              <Button variant="outline" size="sm">
+              <Button variant="default" size="sm">
                 Alert
               </Button>
             </Link>
@@ -159,28 +159,28 @@ export default function DashboardPage() {
                   <BarChart data={productionData}>
                     <CartesianGrid
                       strokeDasharray="3 3"
-                      stroke="hsl(var(--border))"
+                      stroke="grey"
                     />
                     <XAxis
                       dataKey="country"
-                      stroke="hsl(var(--muted-foreground))"
+                      stroke="black"
                       fontSize={12}
                     />
                     <YAxis
-                      stroke="hsl(var(--muted-foreground))"
+                      stroke="black"
                       fontSize={12}
                     />
                     <Tooltip
                       contentStyle={{
-                        backgroundColor: "hsl(var(--popover))",
-                        border: "1px solid hsl(var(--border))",
+                        backgroundColor: "white",
+                        border: "1px solid grey",
                         borderRadius: "0.5rem",
                         color: "hsl(var(--popover-foreground))",
                       }}
                     />
                     <Bar
                       dataKey="value"
-                      fill="hsl(var(--primary))"
+                      fill="#2955d3"
                       radius={[4, 4, 0, 0]}
                     />
                   </BarChart>
@@ -210,8 +210,8 @@ export default function DashboardPage() {
                     />
                     <Tooltip
                       contentStyle={{
-                        backgroundColor: "hsl(var(--popover))",
-                        border: "1px solid hsl(var(--border))",
+                        backgroundColor: "white",
+                        border: "1px solid grey",
                         borderRadius: "0.5rem",
                         color: "hsl(var(--popover-foreground))",
                       }}
@@ -219,9 +219,9 @@ export default function DashboardPage() {
                     <Line
                       type="monotone"
                       dataKey="shipped"
-                      stroke="hsl(var(--chart-2))"
+                      stroke="#2955d3"
                       strokeWidth={2}
-                      dot={{ fill: "hsl(var(--chart-2))", r: 4 }}
+                      dot={{ fill: "#2955d3", r: 4 }}
                     />
                   </LineChart>
                 </ResponsiveContainer>
